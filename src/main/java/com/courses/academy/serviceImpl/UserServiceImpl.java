@@ -20,10 +20,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Optional<ResponseDto> loginUser(String userId, String pwd) {
-		Optional<User> user = userRepository.findByNameAndPwd(userId, pwd);
+		User user = userRepository.findByNameAndPwd(userId, pwd);
 
-		if (user.isPresent()) {
-			if (user.get().getEmailId().equals(userId) && user.get().getPassword().equals(pwd))
+		if (user!=null) {
+			if (user.getEmailId().equals(userId) && user.getPassword().equals(pwd))
 
 				responseDto = new ResponseDto();
 			responseDto.setMessage("Login Success");
