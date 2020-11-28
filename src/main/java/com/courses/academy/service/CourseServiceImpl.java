@@ -1,6 +1,7 @@
 package com.courses.academy.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,14 +9,18 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.courses.academy.dto.CourseDto;
+import com.courses.academy.dto.CourseResponseDto;
+import com.courses.academy.dto.CourseResponsesDto;
 import com.courses.academy.dto.EnrollResponseDto;
 import com.courses.academy.dto.ResponseDto;
 import com.courses.academy.entity.Course;
 import com.courses.academy.entity.CourseData;
 import com.courses.academy.entity.Enrollment;
+import com.courses.academy.exception.CoursesNotFoundException;
 import com.courses.academy.exception.EnrollmentNotAllowedException;
 import com.courses.academy.exception.EnrollmentNotFoundException;
 import com.courses.academy.exception.InvalidCourseIdException;
@@ -25,7 +30,6 @@ import com.courses.academy.repository.EnrollmentRepository;
 import com.courses.academy.repository.UserRepository;
 import com.courses.academy.util.CourseStatus;
 import com.courses.academy.util.UserConstants;
-
 
 /**
  * Implementation of CourseService which will give the course related
@@ -164,6 +168,46 @@ public class CourseServiceImpl implements CourseService {
 		responseDto.setMessage(UserConstants.ENROLLMENT_UPDATE_SUCCESS);
 		responseDto.setStatus(HttpStatus.OK.value());
 		return responseDto;
+
+	}
+
+	/**
+	 * Method to fetch the courses
+	 * 
+	 * @param no input is provided here
+	 * @return List<CourseResponsesDto> which consist of list of Courses.
+	 * @throws CoursesNotFoundException will throw if fetching courses fails.
+	 */
+	@Override
+	public Optional<CourseResponsesDto> obtainCourses() {
+
+		List<Course> coursesList = courseRepository.findAll();
+		List<CourseData> coursesDataList = courseDataRepository.findAll();
+		List<CourseResponseDto> courseResponseDtoList = new ArrayList<>();
+		if (CollectionUtils.isEmpty(coursesList)) {
+			throw new CoursesNotFoundException(UserConstants.COURSES_NOT_FOUND);
+		}
+		for (int i = 0; i < coursesList.size(); i++) {
+			CourseResponseDto courseResponseDto = new CourseResponseDto();
+			Course course = coursesList.get(i);
+			CourseData courseData = coursesDataList.get(i);
+			courseResponseDto.setCourseId(course.getCourseId());
+			courseResponseDto.setCourseCode(courseData.getCourseCode());
+			courseResponseDto.setCourseName(courseData.getCourseName());
+			courseResponseDto.setEndDate(course.getEndDate());
+			courseResponseDto.setStartDate(course.getStartDate());
+			courseResponseDto.setTrainerName(course.getTrainerName());
+			courseResponseDto.setTrainingDuration(course.getTrainingDuration());
+			courseResponseDtoList.add(courseResponseDto);
+
+		}
+		CourseResponsesDto courseResponsesDto = new CourseResponsesDto();
+
+		courseResponsesDto.setMessage(UserConstants.COURSE_DETAILS);
+		courseResponsesDto.setStatusCode(200);
+		courseResponsesDto.setCoursesList(courseResponseDtoList);
+
+		return Optional.of(courseResponsesDto);
 
 	}
 }

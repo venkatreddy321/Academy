@@ -15,5 +15,8 @@ public class UserConstants {
 	public static final String ENROLLMENT_NOT_FOUND="Enrollment not found";
 	public static final String ENROLLMENT_CAN_NOT_CANCELLED="Course can not cancelled because it is in :";
 	public static final String ENROLLMENT_UPDATE_SUCCESS="Enrollment updated successfully";
+	public static final String COURSES_NOT_FOUND = "No Course Available at this moment";
+	public static final String COURSE_DETAILS = "Course Details Found Successfully";
+	public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
 	
 }

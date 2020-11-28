@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.courses.academy.dto.CourseDto;
+import com.courses.academy.dto.CourseResponsesDto;
 import com.courses.academy.dto.EnrollResponseDto;
 import com.courses.academy.dto.ResponseDto;
 import com.courses.academy.entity.Enrollment;
@@ -50,6 +51,8 @@ public interface CourseService {
 	
 	public ResponseDto editEnrollment(Integer enrollId, Integer courseId)
 			throws EnrollmentNotFoundException, InvalidCourseIdException;
+	
+	public Optional<CourseResponsesDto> obtainCourses();
 	
 	/**
 	 * Method to validate the enrollment 
