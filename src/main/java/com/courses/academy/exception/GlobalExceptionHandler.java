@@ -38,4 +38,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 
 	}
+	@ExceptionHandler(EnrollmentNotFoundException.class)
+	public ResponseEntity<ErrorResponse> enrollmentNotFoundExceptionHandler(EnrollmentNotFoundException exception, WebRequest request) {
+		ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value()
+				);
+		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+
+	}
 }

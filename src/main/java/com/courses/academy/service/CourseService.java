@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.courses.academy.dto.CourseDto;
 import com.courses.academy.dto.EnrollResponseDto;
+import com.courses.academy.dto.ResponseDto;
 import com.courses.academy.entity.Enrollment;
 import com.courses.academy.exception.EnrollmentNotAllowedException;
+import com.courses.academy.exception.EnrollmentNotFoundException;
 import com.courses.academy.exception.InvalidCourseIdException;
 import com.courses.academy.util.CourseStatus;
 import com.courses.academy.util.UserConstants;
@@ -41,6 +44,10 @@ public interface CourseService {
 	public EnrollResponseDto courseEnrollment(String userId, Integer courseId)
 			throws InvalidCourseIdException, EnrollmentNotAllowedException;
 
+	public List<CourseDto> enrollmentList(String userId);
+	
+	public ResponseDto cancelEnrollment(Integer enrollId) throws EnrollmentNotFoundException;
+	
 	/**
 	 * Method to validate the enrollment 
 	 * -> course start date is before the current
@@ -79,4 +86,5 @@ public interface CourseService {
 		}
 	}
 
+	
 }
