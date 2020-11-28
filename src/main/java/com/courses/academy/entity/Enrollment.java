@@ -56,5 +56,4 @@ public LocalDate getLastUpdated() {
 public void setLastUpdated(LocalDate lastUpdated) {
 	this.lastUpdated = lastUpdated;
 }
-
 }
