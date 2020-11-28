@@ -103,12 +103,11 @@ public class CourseServiceImpl implements CourseService {
 
 		Optional<List<Enrollment>> enrollmentList = enrollmentRepository.findByUserId(userId);
 
-		CourseDto courseDto = new CourseDto();
-
 		if (!enrollmentList.isPresent()) {
 			throw new EnrollmentNotFoundException(UserConstants.ENROLLMENT_NOT_FOUND);
 		}
 		return enrollmentList.get().stream().map(enroll -> {
+			CourseDto courseDto = new CourseDto();
 			Optional<CourseData> courseData = courseDataRepository.findById(enroll.getCourseId());
 			courseDto.setCourseId(courseData.get().getCourseId());
 			courseDto.setCourseCode(courseData.get().getCourseCode());
