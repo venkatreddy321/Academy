@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.courses.academy.dto.CourseDto;
 import com.courses.academy.dto.EnrollResponseDto;
@@ -24,6 +25,7 @@ import com.courses.academy.repository.EnrollmentRepository;
 import com.courses.academy.repository.UserRepository;
 import com.courses.academy.util.CourseStatus;
 import com.courses.academy.util.UserConstants;
+
 
 /**
  * Implementation of CourseService which will give the course related
@@ -93,13 +95,16 @@ public class CourseServiceImpl implements CourseService {
 
 	}
 
-	public List<CourseDto> enrollmentList(String userId) {
+	public List<CourseDto> enrollmentList(String userId) throws EnrollmentNotFoundException {
 
 		Optional<List<Enrollment>> enrollmentList = enrollmentRepository.findByUserId(userId);
 
 		CourseDto courseDto = new CourseDto();
 
-		List<CourseDto> courseDtos = enrollmentList.get().stream().map(enroll -> {
+		if (!enrollmentList.isPresent()) {
+			throw new EnrollmentNotFoundException(UserConstants.ENROLLMENT_NOT_FOUND);
+		}
+		return enrollmentList.get().stream().map(enroll -> {
 			Optional<CourseData> courseData = courseDataRepository.findById(enroll.getCourseId());
 			courseDto.setCourseId(courseData.get().getCourseId());
 			courseDto.setCourseCode(courseData.get().getCourseCode());
@@ -109,7 +114,6 @@ public class CourseServiceImpl implements CourseService {
 			return courseDto;
 		}).collect(Collectors.toList());
 
-		return courseDtos;
 	}
 
 	public ResponseDto cancelEnrollment(Integer enrollId) throws EnrollmentNotFoundException {
@@ -127,6 +131,37 @@ public class CourseServiceImpl implements CourseService {
 		}
 		ResponseDto responseDto = new ResponseDto();
 		responseDto.setMessage(UserConstants.ENROLLMENT_CANCELLED);
+		responseDto.setStatus(HttpStatus.OK.value());
+		return responseDto;
+
+	}
+
+	public ResponseDto editEnrollment(Integer enrollId, Integer courseId)
+			throws EnrollmentNotFoundException, InvalidCourseIdException {
+
+		Optional<Enrollment> enrollment = enrollmentRepository.findById(enrollId);
+		if (!enrollment.isPresent()) {
+			throw new EnrollmentNotFoundException(UserConstants.ENROLLMENT_NOT_FOUND);
+		}
+		if (!StringUtils.isEmpty(courseId)) {
+			Optional<CourseData> courseData = courseDataRepository.findById(courseId);
+
+			if (!courseData.isPresent()) {
+				throw new InvalidCourseIdException(UserConstants.INVALID_COURSE);
+			}
+			if (enrollment.get().getEnrollmentStatus().equals(CourseStatus.SCHEDULED.name())) {
+				enrollment.get().setCourseId(courseId);
+				enrollment.get().setLastUpdated(LocalDate.now());
+				enrollmentRepository.save(enrollment.get());
+			} else {
+				throw new EnrollmentNotFoundException(
+						UserConstants.ENROLLMENT_CAN_NOT_CANCELLED + enrollment.get().getEnrollmentStatus());
+			}
+
+		}
+
+		ResponseDto responseDto = new ResponseDto();
+		responseDto.setMessage(UserConstants.ENROLLMENT_UPDATE_SUCCESS);
 		responseDto.setStatus(HttpStatus.OK.value());
 		return responseDto;
 

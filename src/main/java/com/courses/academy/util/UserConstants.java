@@ -2,6 +2,9 @@ package com.courses.academy.util;
 
 public class UserConstants {
 
+	private UserConstants() {
+		
+	}
 	public static final String INVALID_COURSE="course id in not valid";
 	public static final String COURSE_ALREADY_STARTED="Enrollment can not be done as course already started";
 	public static final String COURSE_STARTING_TWO_DAYS="Enrollment can not be done as course will start in two days only";
@@ -11,5 +14,6 @@ public class UserConstants {
 	public static final String ENROLLMENT_CANCELLED="Course cancelled successfully";
 	public static final String ENROLLMENT_NOT_FOUND="Enrollment not found";
 	public static final String ENROLLMENT_CAN_NOT_CANCELLED="Course can not cancelled because it is in :";
+	public static final String ENROLLMENT_UPDATE_SUCCESS="Enrollment updated successfully";
 	
 }

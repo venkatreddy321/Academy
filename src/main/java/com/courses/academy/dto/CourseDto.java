@@ -1,7 +1,5 @@
 package com.courses.academy.dto;
 
-import java.time.LocalDate;
-
 public class CourseDto {
 
 	private Integer enrollmentId;

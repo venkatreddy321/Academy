@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,7 +62,7 @@ public class CourseController {
 	}
 
 	@GetMapping("/users/{userId}/enroll")
-	public ResponseEntity<List<CourseDto>> enrollmentList(@PathVariable String userId) {
+	public ResponseEntity<List<CourseDto>> enrollmentList(@PathVariable String userId) throws EnrollmentNotFoundException {
 
 		List<CourseDto> courseDtos = courseService.enrollmentList(userId);
 
@@ -75,7 +76,12 @@ public class CourseController {
 		return new ResponseEntity<>(courseService.cancelEnrollment(enrollId), HttpStatus.OK);
 
 	}
-	
-//	@PutMapping("/enroll/{enrollId}")
-//	public ResponseEntity<T> editEnrollment(@PathVariable Integer enrollId)
+
+	@PutMapping("/enroll/{enrollId}")
+	public ResponseEntity<ResponseDto> editEnrollment(@PathVariable Integer enrollId, @RequestParam Integer courseId)
+			throws EnrollmentNotFoundException, InvalidCourseIdException {
+
+		return new ResponseEntity<>(courseService.editEnrollment(enrollId, courseId), HttpStatus.OK);
+
+	}
 }

@@ -1,6 +1,6 @@
 package com.courses.academy.exception;
 
-public class InvalidUserException extends RuntimeException {
+public class InvalidUserException extends Exception {
 
 	/**
 	 * 

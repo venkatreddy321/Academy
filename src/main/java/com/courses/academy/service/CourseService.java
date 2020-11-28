@@ -44,9 +44,12 @@ public interface CourseService {
 	public EnrollResponseDto courseEnrollment(String userId, Integer courseId)
 			throws InvalidCourseIdException, EnrollmentNotAllowedException;
 
-	public List<CourseDto> enrollmentList(String userId);
+	public List<CourseDto> enrollmentList(String userId) throws EnrollmentNotFoundException;
 	
 	public ResponseDto cancelEnrollment(Integer enrollId) throws EnrollmentNotFoundException;
+	
+	public ResponseDto editEnrollment(Integer enrollId, Integer courseId)
+			throws EnrollmentNotFoundException, InvalidCourseIdException;
 	
 	/**
 	 * Method to validate the enrollment 
