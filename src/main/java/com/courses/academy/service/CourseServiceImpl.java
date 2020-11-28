@@ -15,8 +15,14 @@ import com.courses.academy.exception.EnrollmentNotAllowedException;
 import com.courses.academy.exception.InvalidCourseIdException;
 import com.courses.academy.repository.CourseRepository;
 import com.courses.academy.repository.EnrollmentRepository;
+import com.courses.academy.util.CourseStatus;
 import com.courses.academy.util.UserConstants;
 
+/**
+ * Implementation of CourseService which will give the course related operations.
+ * @author Kiruthika && prem
+ * @since 2020/11/28
+ */
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -25,6 +31,22 @@ public class CourseServiceImpl implements CourseService {
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
 
+	/**
+	 * Method to enroll the course
+	 * 
+	 * @param userId   id of the user who is going to enroll.
+	 * @param courseId course id to enroll the course .
+	 * @return CustomerResponseDto which consist the message ,status code ,
+	 *         enrollment id.
+	 * @throws InvalidCourseIdException      will throw if the course not valid.
+	 * @throws EnrollmentNotAllowedException will throw if -> course start date is
+	 *                                       before the current date. -> current
+	 *                                       date is less than two days before of
+	 *                                       course start date. -> course start date
+	 *                                       is after twenty days from current date.
+	 *                                       -> user have more than three scheduled
+	 *                                       courses.
+	 */
 	public EnrollResponseDto courseEnrollment(String userId, Integer courseId)
 			throws InvalidCourseIdException, EnrollmentNotAllowedException {
 
@@ -44,7 +66,7 @@ public class CourseServiceImpl implements CourseService {
 		Enrollment enroll = new Enrollment();
 		enroll.setCourseId(courseId);
 		enroll.setEnrollmentDate(currentDate);
-		enroll.setEnrollmentStatus("SCHEDULED");
+		enroll.setEnrollmentStatus(CourseStatus.SCHEDULED.name());
 		enroll.setUserId(userId);
 		enroll.setLastUpdated(currentDate);
 		enrollmentRepository.save(enroll);

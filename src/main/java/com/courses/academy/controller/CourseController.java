@@ -14,6 +14,13 @@ import com.courses.academy.exception.EnrollmentNotAllowedException;
 import com.courses.academy.exception.InvalidCourseIdException;
 import com.courses.academy.service.CourseService;
 
+/**
+ * Controller for handling the requests and responses related with courses.
+ * 
+ * @author Kiruthika & Prem
+ * @since 2020/11/28
+ *
+ */
 @RestController
 @RequestMapping("/api")
 public class CourseController {
@@ -21,6 +28,23 @@ public class CourseController {
 	@Autowired
 	CourseService courseService;
 
+	/**
+	 * Method to call service method to enroll the course
+	 * 
+	 * @param userId   id of the user who is going to enroll.
+	 * @param courseId course id to enroll the course .
+	 * @return CustomerResponseDto which consist the message ,status code ,
+	 *         enrollment id.
+	 * @throws InvalidCourseIdException      will throw if the course not valid.
+	 * @throws EnrollmentNotAllowedException will throw if 
+	 *    									 -> course start date is
+	 *                                       before the current date. 
+	 *                                       -> current date is less than two days before of
+	 *                                       course start date. 
+	 *                                       -> course start date is after twenty days from current date.
+	 *                                       -> user have more than three scheduled
+	 *                                       courses.
+	 */
 	@PostMapping("/user/{userId}/enroll")
 	public ResponseEntity<EnrollResponseDto> courseEnrollment(@PathVariable String userId,
 			@RequestParam Integer courseId) throws InvalidCourseIdException, EnrollmentNotAllowedException {
