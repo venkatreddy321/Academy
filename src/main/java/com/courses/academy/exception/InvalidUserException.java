@@ -1,13 +1,13 @@
 package com.courses.academy.exception;
 
-public class UserNotFoundException extends RuntimeException {
+public class InvalidUserException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UserNotFoundException(String message) {
+	public InvalidUserException(String message) {
 		super(message);
 
 	}

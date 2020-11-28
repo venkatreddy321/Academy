@@ -5,9 +5,10 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.courses.academy.dto.ResponseDto;
+import com.courses.academy.entity.User;
 import com.courses.academy.service.UserService;
 
 @RestController
@@ -25,9 +26,9 @@ public class UserController {
 	   }
 
 	@PostMapping("/login")
-	public ResponseEntity<Optional<ResponseDto>> userLogin(@RequestParam String userId, @RequestParam String pwd) {
+	public ResponseEntity<Optional<ResponseDto>> userLogin(@RequestBody User user) {
 
-		return new ResponseEntity<>(userService.loginUser(userId, pwd), HttpStatus.OK);
+		return new ResponseEntity<>(userService.loginUser(user.getUserId(), user.getPassword()), HttpStatus.OK);
 
 	}
 }

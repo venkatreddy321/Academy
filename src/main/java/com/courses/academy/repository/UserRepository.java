@@ -9,7 +9,8 @@ import com.courses.academy.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String>{
 	
-	  @Query("select u from User u where u.userId =:userId and u.password =:password")
-	  User findByNameAndPwd(String userId,String password);
-
+	/*
+	 * @Query("select u from User u where u.userId =:userId and u.password =:password"
+	 * ) User findByIdAndPwd(String userId,String password);
+	 */
 }
