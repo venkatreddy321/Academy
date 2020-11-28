@@ -18,14 +18,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(InvalidCourseIdException.class)
-	public ResponseEntity<ErrorResponse> customerExceptionHandler(InvalidCourseIdException exception, WebRequest request) {
+	public ResponseEntity<ErrorResponse> invalidCourseExceptionHandler(InvalidCourseIdException exception, WebRequest request) {
 		ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value()
 				);
 		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 
 	}
 	@ExceptionHandler(EnrollmentNotAllowedException.class)
-	public ResponseEntity<ErrorResponse> customerExceptionHandler(EnrollmentNotAllowedException exception, WebRequest request) {
+	public ResponseEntity<ErrorResponse> enrollmentNotAllowedExceptionHandler(EnrollmentNotAllowedException exception, WebRequest request) {
+		ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value()
+				);
+		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+
+	}
+	@ExceptionHandler(InvalidUserException.class)
+	public ResponseEntity<ErrorResponse> invalidUserExceptionHandler(InvalidUserException exception, WebRequest request) {
 		ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value()
 				);
 		return new ResponseEntity<>(errorResponse, HttpStatus.OK);
